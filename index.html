@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إلى حبيبة بابا هلا ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 40px 25px;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .profile-img {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ffb6c1;
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(255, 182, 193, 0.5);
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #ffb6c1;
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 1.15rem;
+            line-height: 1.9;
+            margin-bottom: 25px;
+            white-space: pre-line;
+            color: #f1f1f1;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .time-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 12px;
+            min-width: 75px;
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #ff69b4;
+        }
+
+        .time-box label {
+            font-size: 0.8rem;
+            color: #ccc;
+        }
+
+        .heart {
+            font-size: 2.8rem;
+            color: #ff4757;
+            animation: pulse 1.2s infinite ease-in-out;
+            margin-top: 15px;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* زر التحكم بالموسيقى */
+        .music-btn {
+            background: rgba(255, 105, 180, 0.2);
+            border: 1px solid #ff69b4;
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+
+        .music-btn:hover {
+            background: #ff69b4;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- مشغل الصوت (تأكد من رفع ملف باسم music.mp3 في نفس المستودع) -->
+    <audio id="bg-music" loop>
+        <source src="music.mp3" type="audio/mp3">
+    </audio>
+
+    <div class="container" id="main-container">
+        <!-- محتوى صفحة الانتظار (قبل الساعة 12) -->
+        <div id="waiting-section">
+            <img src="hala.jpg" alt="هلا" class="profile-img" onerror="this.style.display='none'">
+            <h1>مفاجأة في الطريق يا غالية ✨</h1>
+            <p>اصبري شويه حبيب بابا</p>
+            
+            <div class="countdown" id="countdown">
+                <div class="time-box">
+                    <span id="hours">00</span>
+                    <label>ساعة</label>
+                </div>
+                <div class="time-box">
+                    <span id="minutes">00</span>
+                    <label>دقيقة</label>
+                </div>
+                <div class="time-box">
+                    <span id="seconds">00</span>
+                    <label>ثانية</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- محتوى صفحة التهنئة (بعد الساعة 12) -->
+        <div id="birthday-section" style="display: none;">
+            <img src="hala.jpg" alt="هلا" class="profile-img" onerror="this.style.display='none'">
+            <h1>كل سنة وانتي طيبة يا هلا ❤️</h1>
+            <p>
+كل سنة وانتي طيبه
+وان شاء الله تكون سنه احلى واجمل من ال قبلها
+فرحتي انهرده كذا فرحة عشان بنوتي الصغيرة و صحيتي و حببتي و مراتي كبروا سنه
+بحبك اوييييي♥️
+            </p>
+            <div class="heart">❤️</div>
+        </div>
+
+        <!-- زر تشغيل/إيقاف الموسيقى -->
+        <button class="music-btn" id="music-toggle" onclick="toggleMusic()">🎵 تشغيل الموسيقى</button>
+    </div>
+
+    <script>
+        const birthdayDate = new Date("November 13, 2026 00:00:00").getTime();
+        const music = document.getElementById("bg-music");
+        const musicBtn = document.getElementById("music-toggle");
+
+        function toggleMusic() {
+            if (music.paused) {
+                music.play();
+                musicBtn.innerText = "🔇 إيقاف الموسيقى";
+            } else {
+                music.pause();
+                musicBtn.innerText = "🎵 تشغيل الموسيقى";
+            }
+        }
+
+        const timer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = birthdayDate - now;
+
+            if (distance <= 0) {
+                clearInterval(timer);
+                document.getElementById("waiting-section").style.display = "none";
+                document.getElementById("birthday-section").style.display = "block";
+                
+                // محاولة تشغيل الموسيقى تلقائياً عند فتح الموقع بعد الساعة 12
+                music.play().then(() => {
+                    musicBtn.innerText = "🔇 إيقاف الموسيقى";
+                }).catch(e => {
+                    console.log("Autoplay blocked");
+                });
+
+            } else {
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("hours").innerText = String(hours).padStart(2, '0');
+                document.getElementById("minutes").innerText = String(minutes).padStart(2, '0');
+                document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
+            }
+        }, 1000);
+    </script>
+
+</body>
+</html>
